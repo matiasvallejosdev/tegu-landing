@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #2D2A5E;
+}
+
+@theme inline {
+  /* Colors */
+  --color-primary: #5B6EE1;
+  --color-primary-dark: #4A5BC7;
+  --color-primary-light: #7B8FFF;
+
+  --color-secondary: #9B7ED9;
+  --color-secondary-light: #C4B5F0;
+
+  --color-accent-pink: #E8A4C4;
+  --color-accent-cyan: #A8E6F0;
+
+  --color-background: #FFFFFF;
+  --color-background-secondary: #F8F9FF;
+
+  --color-text-primary: #2D2A5E;
+  --color-text-secondary: #6B6B8D;
+
+  --color-border: #E8E8F0;
+
+  /* Fonts */
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+/* Custom gradients */
+.bg-gradient-hero {
+  background: linear-gradient(135deg, #C4B5F0 0%, #A8E6F0 100%);
+}
+
+.bg-gradient-card {
+  background: linear-gradient(180deg, #F0EDFF 0%, #E8F7FA 100%);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F8F9FF;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C4B5F0;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9B7ED9;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* Animation utilities */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes bounce-gentle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-bounce-gentle {
+  animation: bounce-gentle 2s ease-in-out infinite;
+}
