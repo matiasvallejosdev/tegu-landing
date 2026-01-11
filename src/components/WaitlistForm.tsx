@@ -1,224 +1,498 @@
 "use client";
 
+import type React from "react";
+
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  CheckCircle,
+  Search,
+  Wrench,
+  Sparkles,
+  ArrowRight,
+  Share2,
+  Hammer,
+  Paintbrush,
+  Zap,
+  Droplets,
+  Wind,
+  Scissors,
+  Mail,
+  Phone,
+} from "lucide-react";
 import Image from "next/image";
-import { ArrowRight, Check, Home, Wrench, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-type UserType = "client" | "provider" | "both" | null;
-type Step = 1 | 2 | 3;
+type Step = "contact" | "purpose" | "categories" | "success";
+type Purpose = "buscar" | "ofrecer" | "ambas" | null;
+type ContactMethod = "email" | "phone";
 
-interface OptionCardProps {
+type ServiceCategory = {
+  id: string;
+  name: string;
   icon: React.ReactNode;
-  label: string;
-  selected: boolean;
-  onClick: () => void;
-}
+};
 
-function OptionCard({ icon, label, selected, onClick }: OptionCardProps) {
-  return (
-    <button
-      onClick={onClick}
-      className={cn(
-        "flex items-center gap-4 p-4 rounded-xl border-2 transition-all duration-200 w-full text-left",
-        selected
-          ? "border-primary bg-primary/5 shadow-md"
-          : "border-border hover:border-primary/50 bg-white"
-      )}
-    >
-      <div
-        className={cn(
-          "w-12 h-12 rounded-xl flex items-center justify-center transition-colors",
-          selected ? "bg-primary text-white" : "bg-background-secondary text-text-secondary"
-        )}
-      >
-        {icon}
-      </div>
-      <span className={cn("font-medium", selected ? "text-text-primary" : "text-text-secondary")}>
-        {label}
-      </span>
-      {selected && (
-        <div className="ml-auto w-6 h-6 rounded-full bg-primary flex items-center justify-center">
-          <Check size={14} className="text-white" />
-        </div>
-      )}
-    </button>
-  );
-}
+const SERVICE_CATEGORIES: ServiceCategory[] = [
+  { id: "plomeria", name: "Plomería", icon: <Droplets className="w-6 h-6" /> },
+  { id: "electricidad", name: "Electricidad", icon: <Zap className="w-6 h-6" /> },
+  { id: "pintura", name: "Pintura", icon: <Paintbrush className="w-6 h-6" /> },
+  { id: "carpinteria", name: "Carpintería", icon: <Hammer className="w-6 h-6" /> },
+  { id: "jardineria", name: "Jardinería", icon: <Scissors className="w-6 h-6" /> },
+  { id: "limpieza", name: "Limpieza", icon: <Sparkles className="w-6 h-6" /> },
+  { id: "aire", name: "Aire Acondicionado", icon: <Wind className="w-6 h-6" /> },
+  { id: "reparaciones", name: "Reparaciones", icon: <Wrench className="w-6 h-6" /> },
+];
 
 export default function WaitlistForm() {
-  const [step, setStep] = useState<Step>(1);
+  const [step, setStep] = useState<Step>("contact");
+  const [contactMethod, setContactMethod] = useState<ContactMethod>("phone");
   const [email, setEmail] = useState("");
-  const [userType, setUserType] = useState<UserType>(null);
-  const [position] = useState(Math.floor(Math.random() * 100) + 248);
+  const [phone, setPhone] = useState("");
+  const [purpose, setPurpose] = useState<Purpose>(null);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [waitlistNumber] = useState(267);
 
-  const handleEmailSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email && email.includes("@")) {
-      setStep(2);
+    if (contactMethod === "email" && email) {
+      setStep("purpose");
+    } else if (contactMethod === "phone" && phone) {
+      setStep("purpose");
     }
   };
 
-  const handleUserTypeSubmit = () => {
-    if (userType) {
-      console.log("Waitlist submission:", { email, userType });
-      setStep(3);
+  const handlePurposeSelect = (selectedPurpose: Purpose) => {
+    setPurpose(selectedPurpose);
+  };
+
+  const toggleCategory = (categoryId: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(categoryId)
+        ? prev.filter((id) => id !== categoryId)
+        : [...prev, categoryId]
+    );
+  };
+
+  const handleFinalize = () => {
+    if (purpose) {
+      if (purpose === "ofrecer" || purpose === "ambas") {
+        setStep("categories");
+      } else {
+        setStep("success");
+      }
     }
   };
+
+  const handleCategoriesSubmit = () => {
+    if (selectedCategories.length > 0) {
+      setStep("success");
+    }
+  };
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: "Unite a Tegü",
+        text: "Unite a la lista de espera de Tegü, tareas resueltas, oportunidades creadas",
+        url: window.location.href,
+      });
+    }
+  };
+
+  const showCategoriesStep = purpose === "ofrecer" || purpose === "ambas";
 
   return (
-    <section id="waitlist" className="py-20 md:py-32 bg-gradient-hero">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
-          <div className="p-6 md:p-10 lg:p-12">
-            {/* Progress indicator */}
-            <div className="flex items-center justify-center gap-2 mb-8">
-              {[1, 2, 3].map((s) => (
-                <div
-                  key={s}
-                  className={cn(
-                    "h-2 rounded-full transition-all duration-300",
-                    s === step ? "w-8 bg-primary" : "w-2 bg-border",
-                    s < step && "bg-primary"
-                  )}
-                />
-              ))}
-            </div>
-
-            {/* Step 1: Email */}
-            {step === 1 && (
-              <div className="flex flex-col md:flex-row items-center gap-8">
-                <div className="flex-shrink-0">
-                  <Image
-                    src="/assets/tegu-hi.png"
-                    alt="Tegu saludando"
-                    width={200}
-                    height={200}
-                    className="w-32 md:w-48 h-auto"
-                  />
-                </div>
-                <div className="flex-1 text-center md:text-left">
-                  <h2 className="text-2xl md:text-3xl font-bold text-text-primary mb-2">
-                    Unite a la lista de espera
-                  </h2>
-                  <p className="text-text-secondary mb-6">
-                    Se de los primeros en probar Tegu
-                  </p>
-                  <form onSubmit={handleEmailSubmit} className="space-y-4">
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="tu@email.com"
-                      required
-                      className={cn(
-                        "w-full px-5 py-4 rounded-xl text-lg",
-                        "border-2 border-border focus:border-primary",
-                        "outline-none transition-colors",
-                        "placeholder:text-text-secondary/50"
-                      )}
-                    />
-                    <button
-                      type="submit"
-                      className={cn(
-                        "w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl",
-                        "bg-primary text-white font-semibold text-lg",
-                        "hover:bg-primary-dark transition-colors",
-                        "shadow-lg hover:shadow-xl"
-                      )}
-                    >
-                      Continuar
-                      <ArrowRight size={20} />
-                    </button>
-                  </form>
-                </div>
-              </div>
+    <section
+      id="waitlist"
+      className="bg-gradient-to-br from-blue-100 via-purple-100 to-cyan-100 py-24 md:py-32"
+    >
+      <div className="container mx-auto px-4">
+        <div className="relative w-full max-w-4xl mx-auto">
+          {/* Progress Dots */}
+          <div className="flex justify-center gap-2 mb-8">
+            <div
+              className={cn(
+                "h-1.5 rounded-full transition-all duration-500",
+                step === "contact" ? "w-12 bg-blue-600" : "w-2 bg-gray-300"
+              )}
+            />
+            <div
+              className={cn(
+                "h-1.5 rounded-full transition-all duration-500",
+                step === "purpose" ? "w-12 bg-blue-600" : "w-2 bg-gray-300"
+              )}
+            />
+            {showCategoriesStep && (
+              <div
+                className={cn(
+                  "h-1.5 rounded-full transition-all duration-500",
+                  step === "categories" ? "w-12 bg-blue-600" : "w-2 bg-gray-300"
+                )}
+              />
             )}
+            <div
+              className={cn(
+                "h-1.5 rounded-full transition-all duration-500",
+                step === "success" ? "w-12 bg-blue-600" : "w-2 bg-gray-300"
+              )}
+            />
+          </div>
 
-            {/* Step 2: User Type */}
-            {step === 2 && (
-              <div className="flex flex-col md:flex-row items-center gap-8">
-                <div className="flex-shrink-0">
-                  <Image
-                    src="/assets/tegu-form.png"
-                    alt="Tegu con formulario"
-                    width={200}
-                    height={200}
-                    className="w-32 md:w-48 h-auto"
-                  />
-                </div>
-                <div className="flex-1">
-                  <h2 className="text-2xl md:text-3xl font-bold text-text-primary mb-2 text-center md:text-left">
-                    Que te trae a Tegu?
-                  </h2>
-                  <p className="text-text-secondary mb-6 text-center md:text-left">
-                    Esto nos ayuda a personalizar tu experiencia
-                  </p>
-                  <div className="space-y-3 mb-6">
-                    <OptionCard
-                      icon={<Home size={24} />}
-                      label="Busco servicios para mi hogar"
-                      selected={userType === "client"}
-                      onClick={() => setUserType("client")}
-                    />
-                    <OptionCard
-                      icon={<Wrench size={24} />}
-                      label="Quiero ofrecer mis servicios"
-                      selected={userType === "provider"}
-                      onClick={() => setUserType("provider")}
-                    />
-                    <OptionCard
-                      icon={<Sparkles size={24} />}
-                      label="Ambas cosas"
-                      selected={userType === "both"}
-                      onClick={() => setUserType("both")}
+          {/* Form Card */}
+          <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 border border-gray-100">
+            {/* Step 1: Contact */}
+            {step === "contact" && (
+              <div className="space-y-8">
+                <div className="flex flex-col md:flex-row gap-8 items-center">
+                  {/* Mascot */}
+                  <div className="flex-shrink-0">
+                    <Image
+                      src="/assets/tegu-hi.png"
+                      alt="Tegü"
+                      width={200}
+                      height={200}
+                      className="drop-shadow-lg"
                     />
                   </div>
-                  <button
-                    onClick={handleUserTypeSubmit}
-                    disabled={!userType}
-                    className={cn(
-                      "w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl",
-                      "font-semibold text-lg transition-all",
-                      userType
-                        ? "bg-primary text-white hover:bg-primary-dark shadow-lg hover:shadow-xl"
-                        : "bg-border text-text-secondary cursor-not-allowed"
-                    )}
-                  >
-                    Finalizar
-                    <ArrowRight size={20} />
-                  </button>
+
+                  {/* Content */}
+                  <div className="flex-1 space-y-6 text-center md:text-left w-full">
+                    <div className="space-y-2">
+                      <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+                        Unite a la lista de espera
+                      </h2>
+                      <p className="text-lg text-muted-foreground">
+                        Sé de los primeros en probar Tegü
+                      </p>
+                    </div>
+
+                    {/* Contact Method Toggle */}
+                    <div className="flex justify-center md:justify-start">
+                      <div className="inline-flex items-center bg-gray-100 rounded-full p-1">
+                        <button
+                          type="button"
+                          onClick={() => setContactMethod("email")}
+                          className={cn(
+                            "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all",
+                            contactMethod === "email"
+                              ? "bg-white text-gray-900 shadow-sm"
+                              : "text-gray-600 hover:text-gray-900"
+                          )}
+                        >
+                          <Mail className="w-4 h-4" />
+                          Email
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setContactMethod("phone")}
+                          className={cn(
+                            "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all",
+                            contactMethod === "phone"
+                              ? "bg-white text-gray-900 shadow-sm"
+                              : "text-gray-600 hover:text-gray-900"
+                          )}
+                        >
+                          <Phone className="w-4 h-4" />
+                          Teléfono
+                        </button>
+                      </div>
+                    </div>
+
+                    <form onSubmit={handleContactSubmit} className="space-y-4">
+                      {contactMethod === "email" ? (
+                        <Input
+                          type="email"
+                          placeholder="tu@email.com"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                          className="h-14 text-lg px-6 rounded-2xl border border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-colors"
+                        />
+                      ) : (
+                        <Input
+                          type="tel"
+                          placeholder="+54 9 351 123 4567"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          required
+                          className="h-14 text-lg px-6 rounded-2xl border border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-colors"
+                        />
+                      )}
+                      <Button
+                        type="submit"
+                        size="lg"
+                        className="w-full h-14 text-lg rounded-2xl bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all"
+                      >
+                        Continuar
+                        <ArrowRight className="ml-2 w-5 h-5" />
+                      </Button>
+                    </form>
+                  </div>
                 </div>
               </div>
             )}
 
-            {/* Step 3: Success */}
-            {step === 3 && (
-              <div className="text-center py-8">
-                <div className="flex justify-center mb-6">
+            {/* Step 2: Purpose */}
+            {step === "purpose" && (
+              <div className="space-y-8">
+                <div className="flex flex-col md:flex-row gap-8 items-start">
+                  {/* Mascot */}
+                  <div className="flex-shrink-0 hidden md:block">
+                    <Image
+                      src="/assets/tegu-form.png"
+                      alt="Tegü"
+                      width={200}
+                      height={200}
+                      className="drop-shadow-lg"
+                    />
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 space-y-6 w-full">
+                    <div className="space-y-2 text-center md:text-left">
+                      <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+                        ¿Qué te trae a Tegü?
+                      </h2>
+                      <p className="text-lg text-muted-foreground">
+                        Esto nos ayuda a personalizar tu experiencia
+                      </p>
+                    </div>
+
+                    <div className="space-y-3">
+                      {/* Option 1 */}
+                      <button
+                        onClick={() => handlePurposeSelect("buscar")}
+                        className={cn(
+                          "w-full flex items-center gap-4 p-5 rounded-2xl border-2 transition-all hover:shadow-md",
+                          purpose === "buscar"
+                            ? "border-blue-600 bg-blue-50 shadow-md"
+                            : "border-gray-200 hover:border-gray-300"
+                        )}
+                      >
+                        <div
+                          className={cn(
+                            "w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0",
+                            purpose === "buscar"
+                              ? "bg-gradient-to-br from-blue-500 to-blue-600"
+                              : "bg-gradient-to-br from-gray-100 to-gray-200"
+                          )}
+                        >
+                          <Search
+                            className={cn(
+                              "w-6 h-6",
+                              purpose === "buscar" ? "text-white" : "text-gray-600"
+                            )}
+                          />
+                        </div>
+                        <span className="text-lg font-medium text-left">
+                          Necesito resolver una tarea
+                        </span>
+                      </button>
+
+                      {/* Option 2 */}
+                      <button
+                        onClick={() => handlePurposeSelect("ofrecer")}
+                        className={cn(
+                          "w-full flex items-center gap-4 p-5 rounded-2xl border-2 transition-all hover:shadow-md",
+                          purpose === "ofrecer"
+                            ? "border-purple-600 bg-purple-50 shadow-md"
+                            : "border-gray-200 hover:border-gray-300"
+                        )}
+                      >
+                        <div
+                          className={cn(
+                            "w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0",
+                            purpose === "ofrecer"
+                              ? "bg-gradient-to-br from-purple-500 to-purple-600"
+                              : "bg-gradient-to-br from-gray-100 to-gray-200"
+                          )}
+                        >
+                          <Wrench
+                            className={cn(
+                              "w-6 h-6",
+                              purpose === "ofrecer" ? "text-white" : "text-gray-600"
+                            )}
+                          />
+                        </div>
+                        <span className="text-lg font-medium text-left">
+                          Quiero ofrecer mis servicios
+                        </span>
+                      </button>
+
+                      {/* Option 3 */}
+                      <button
+                        onClick={() => handlePurposeSelect("ambas")}
+                        className={cn(
+                          "w-full flex items-center gap-4 p-5 rounded-2xl border-2 transition-all hover:shadow-md",
+                          purpose === "ambas"
+                            ? "border-cyan-600 bg-cyan-50 shadow-md"
+                            : "border-gray-200 hover:border-gray-300"
+                        )}
+                      >
+                        <div
+                          className={cn(
+                            "w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0",
+                            purpose === "ambas"
+                              ? "bg-gradient-to-br from-cyan-500 to-cyan-600"
+                              : "bg-gradient-to-br from-gray-100 to-gray-200"
+                          )}
+                        >
+                          <Sparkles
+                            className={cn(
+                              "w-6 h-6",
+                              purpose === "ambas" ? "text-white" : "text-gray-600"
+                            )}
+                          />
+                        </div>
+                        <span className="text-lg font-medium text-left">
+                          Ambas cosas
+                        </span>
+                      </button>
+                    </div>
+
+                    <Button
+                      onClick={handleFinalize}
+                      disabled={!purpose}
+                      size="lg"
+                      className="w-full h-14 text-lg rounded-2xl bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Continuar
+                      <ArrowRight className="ml-2 w-5 h-5" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Step 3: Categories (for professionals) */}
+            {step === "categories" && (
+              <div className="space-y-8">
+                <div className="flex flex-col md:flex-row gap-8 items-start">
+                  {/* Mascot */}
+                  <div className="flex-shrink-0 hidden md:block">
+                    <Image
+                      src="/assets/tegu-form.png"
+                      alt="Tegü"
+                      width={200}
+                      height={200}
+                      className="drop-shadow-lg"
+                    />
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 space-y-6 w-full">
+                    <div className="space-y-2 text-center md:text-left">
+                      <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+                        ¿Qué servicios ofrecés?
+                      </h2>
+                      <p className="text-lg text-muted-foreground">
+                        Seleccioná una o más categorías
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {SERVICE_CATEGORIES.map((category) => (
+                        <button
+                          key={category.id}
+                          onClick={() => toggleCategory(category.id)}
+                          className={cn(
+                            "flex items-center gap-4 p-4 rounded-2xl border-2 transition-all hover:shadow-md",
+                            selectedCategories.includes(category.id)
+                              ? "border-purple-600 bg-purple-50 shadow-md"
+                              : "border-gray-200 hover:border-gray-300"
+                          )}
+                        >
+                          <div
+                            className={cn(
+                              "w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all",
+                              selectedCategories.includes(category.id)
+                                ? "bg-gradient-to-br from-purple-500 to-purple-600 text-white"
+                                : "bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600"
+                            )}
+                          >
+                            {category.icon}
+                          </div>
+                          <span className="text-base font-medium text-left">
+                            {category.name}
+                          </span>
+                          {selectedCategories.includes(category.id) && (
+                            <CheckCircle className="w-5 h-5 text-purple-600 ml-auto" />
+                          )}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="pt-2">
+                      <Button
+                        onClick={handleCategoriesSubmit}
+                        disabled={selectedCategories.length === 0}
+                        size="lg"
+                        className="w-full h-14 text-lg rounded-2xl bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Finalizar
+                        <ArrowRight className="ml-2 w-5 h-5" />
+                      </Button>
+                      {selectedCategories.length > 0 && (
+                        <p className="text-sm text-center text-muted-foreground mt-3">
+                          {selectedCategories.length}{" "}
+                          {selectedCategories.length === 1
+                            ? "categoría seleccionada"
+                            : "categorías seleccionadas"}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Step 4: Success */}
+            {step === "success" && (
+              <div className="space-y-8 text-center">
+                {/* Success Icon */}
+                <div className="flex justify-center">
+                  <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center">
+                    <CheckCircle className="w-12 h-12 text-green-600" />
+                  </div>
+                </div>
+
+                {/* Mascot */}
+                <div className="flex justify-center">
                   <Image
                     src="/assets/tegu-earn.png"
-                    alt="Tegu celebrando"
-                    width={200}
-                    height={200}
-                    className="w-40 md:w-56 h-auto"
+                    alt="Tegü celebrando"
+                    width={280}
+                    height={280}
+                    className="drop-shadow-lg"
                   />
                 </div>
-                <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
-                  <Check size={32} className="text-green-600" />
+
+                {/* Success Message */}
+                <div className="space-y-4">
+                  <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
+                    ¡Listo! Estás en la lista
+                  </h2>
+                  <p className="text-xl text-muted-foreground">
+                    Sos el{" "}
+                    <span className="font-bold text-blue-600">
+                      #{waitlistNumber}
+                    </span>{" "}
+                    en la lista. Te avisamos cuando lancemos.
+                  </p>
                 </div>
-                <h2 className="text-2xl md:text-3xl font-bold text-text-primary mb-2">
-                  Listo! Estas en la lista
-                </h2>
-                <p className="text-text-secondary mb-6">
-                  Sos el <span className="font-bold text-primary">#{position}</span> en la lista.
-                  Te avisamos cuando lancemos.
-                </p>
-                <div className="flex items-center justify-center gap-4">
-                  <button className="px-6 py-3 rounded-xl bg-background-secondary text-text-secondary font-medium hover:bg-border transition-colors">
-                    Compartir
-                  </button>
-                </div>
+
+                {/* Share Button */}
+                <Button
+                  onClick={handleShare}
+                  variant="outline"
+                  size="lg"
+                  className="h-14 text-lg px-8 rounded-2xl border border-gray-200 hover:bg-gray-50 bg-transparent"
+                >
+                  <Share2 className="mr-2 w-5 h-5" />
+                  Compartir
+                </Button>
               </div>
             )}
           </div>

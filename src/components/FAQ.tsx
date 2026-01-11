@@ -1,108 +1,103 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
-
-interface FAQItem {
-  question: string;
-  answer: string;
-}
-
-const faqs: FAQItem[] = [
-  {
-    question: "Que es Tegu?",
-    answer:
-      "Tegu es una plataforma que conecta personas que necesitan servicios para el hogar con profesionales verificados, usando inteligencia artificial para encontrar el match perfecto.",
-  },
-  {
-    question: "Cuando estara disponible?",
-    answer:
-      "Estamos en fase de desarrollo. Unite a la lista de espera para ser de los primeros en acceder cuando lancemos.",
-  },
-  {
-    question: "En que ciudades operara?",
-    answer:
-      "Comenzaremos en Buenos Aires y AMBA, con planes de expansion a otras ciudades de Argentina.",
-  },
-  {
-    question: "Es gratis usar Tegu?",
-    answer:
-      "Crear una cuenta y publicar tareas es gratis. Solo cobramos una pequena comision cuando se completa un trabajo exitosamente.",
-  },
-  {
-    question: "Como se verifican los profesionales?",
-    answer:
-      "Validamos identidad, antecedentes y referencias. Ademas, el sistema de resenas permite que la comunidad evalue cada experiencia.",
-  },
-];
-
-function FAQAccordionItem({
-  item,
-  isOpen,
-  onToggle,
-}: {
-  item: FAQItem;
-  isOpen: boolean;
-  onToggle: () => void;
-}) {
-  return (
-    <div className="border-b border-border last:border-b-0">
-      <button
-        onClick={onToggle}
-        className="w-full flex items-center justify-between py-5 text-left"
-      >
-        <span className="text-lg font-semibold text-text-primary pr-4">
-          {item.question}
-        </span>
-        <ChevronDown
-          size={20}
-          className={cn(
-            "flex-shrink-0 text-text-secondary transition-transform duration-300",
-            isOpen && "rotate-180"
-          )}
-        />
-      </button>
-      <div
-        className={cn(
-          "overflow-hidden transition-all duration-300",
-          isOpen ? "max-h-96 pb-5" : "max-h-0"
-        )}
-      >
-        <p className="text-text-secondary leading-relaxed">{item.answer}</p>
-      </div>
-    </div>
-  );
-}
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
-
-  const handleToggle = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
   return (
-    <section className="py-20 md:py-32 bg-background-secondary">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary tracking-tight mb-4">
+    <section className="bg-white py-24 md:py-32">
+      <div className="container mx-auto px-4">
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-balance leading-tight tracking-tight">
             Preguntas frecuentes
           </h2>
-          <p className="text-lg text-text-secondary">
-            Todo lo que necesitas saber sobre Tegu
+          <p className="text-xl text-muted-foreground text-pretty leading-relaxed">
+            Todo lo que necesitas saber sobre Tegü
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg border border-border/50 p-6 md:p-8">
-          {faqs.map((faq, index) => (
-            <FAQAccordionItem
-              key={index}
-              item={faq}
-              isOpen={openIndex === index}
-              onToggle={() => handleToggle(index)}
-            />
-          ))}
+        {/* FAQ Accordion */}
+        <div className="max-w-3xl mx-auto">
+          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem
+                value="item-1"
+                className="border-b border-gray-100 last:border-b-0"
+              >
+                <AccordionTrigger className="px-8 py-6 text-lg font-semibold hover:no-underline hover:bg-gray-50/50 transition-colors">
+                  ¿Qué es Tegü?
+                </AccordionTrigger>
+                <AccordionContent className="px-8 pb-6 text-base text-gray-700 leading-relaxed">
+                  Tegü es una plataforma que conecta personas que necesitan
+                  resolver tareas con profesionales verificados, usando
+                  inteligencia artificial para encontrar el match perfecto.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem
+                value="item-2"
+                className="border-b border-gray-100 last:border-b-0"
+              >
+                <AccordionTrigger className="px-8 py-6 text-lg font-semibold hover:no-underline hover:bg-gray-50/50 transition-colors">
+                  ¿Cuándo estará disponible?
+                </AccordionTrigger>
+                <AccordionContent className="px-8 pb-6 text-base text-gray-700 leading-relaxed">
+                  Estamos trabajando para lanzar Tegü próximamente en Argentina.
+                  Unite a nuestra lista de espera para ser de los primeros en
+                  probar la plataforma cuando esté lista.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem
+                value="item-3"
+                className="border-b border-gray-100 last:border-b-0"
+              >
+                <AccordionTrigger className="px-8 py-6 text-lg font-semibold hover:no-underline hover:bg-gray-50/50 transition-colors">
+                  ¿En qué ciudades operará?
+                </AccordionTrigger>
+                <AccordionContent className="px-8 pb-6 text-base text-gray-700 leading-relaxed">
+                  Comenzaremos operando en Córdoba Capital. A medida que
+                  crezcamos, expandiremos nuestra cobertura a más ciudades
+                  de Argentina.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem
+                value="item-4"
+                className="border-b border-gray-100 last:border-b-0"
+              >
+                <AccordionTrigger className="px-8 py-6 text-lg font-semibold hover:no-underline hover:bg-gray-50/50 transition-colors">
+                  ¿Es gratis usar Tegü?
+                </AccordionTrigger>
+                <AccordionContent className="px-8 pb-6 text-base text-gray-700 leading-relaxed">
+                  Para clientes, usar Tegü es completamente gratis. No cobramos
+                  comisiones. Próximamente implementaremos un sistema de
+                  suscripciones para profesionales.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem
+                value="item-5"
+                className="border-b border-gray-100 last:border-b-0"
+              >
+                <AccordionTrigger className="px-8 py-6 text-lg font-semibold hover:no-underline hover:bg-gray-50/50 transition-colors">
+                  ¿Cómo se verifican los profesionales?
+                </AccordionTrigger>
+                <AccordionContent className="px-8 pb-6 text-base text-gray-700 leading-relaxed">
+                  Cada profesional pasa por un proceso de verificación que
+                  incluye validación de identidad, referencias laborales, y
+                  revisión de experiencia. Además, contamos con un sistema de
+                  reseñas donde los usuarios pueden calificar el servicio
+                  recibido.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
         </div>
       </div>
     </section>

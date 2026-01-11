@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Sparkles } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 export default function Hero() {
   const scrollToWaitlist = () => {
@@ -20,65 +21,77 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-gradient-hero overflow-hidden">
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-white/30 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-white/20 rounded-full blur-3xl" />
-      </div>
+    <section className="relative min-h-screen flex items-center overflow-hidden">
+      {/* Hero Section */}
+      <div className="container mx-auto px-4 py-12 md:py-20">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Content */}
+          <div className="space-y-8 text-center lg:text-left">
+            <Badge
+              variant="secondary"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-purple-100 text-purple-700 border-purple-200 rounded-full"
+            >
+              <Sparkles className="w-4 h-4" />
+              Proximamente en Argentina
+            </Badge>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-          <div className="flex-1 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full mb-6 shadow-sm">
-              <Image
-                src="/assets/tegulogo.png"
-                alt="Tegu"
-                width={24}
-                height={24}
-                className="w-6 h-6"
-              />
-              <span className="text-text-primary font-medium text-sm">
-                Proximamente en Argentina
-              </span>
+            <div className="space-y-4">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-balance leading-tight">
+                Tareas resueltas,{" "}
+                <span className="bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent">
+                  oportunidades creadas
+                </span>
+              </h1>
+              <p className="text-xl md:text-2xl text-muted-foreground text-pretty leading-relaxed max-w-2xl">
+                Conectamos personas con profesionales verificados para resolver cualquier tarea. Simple, seguro e impulsado por IA.
+              </p>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-text-primary leading-tight tracking-tight mb-6">
-              El futuro de los servicios del hogar
-            </h1>
-
-            <p className="text-lg md:text-xl text-text-secondary max-w-2xl mx-auto lg:mx-0 leading-relaxed mb-8">
-              Conectamos talento verificado con quienes lo necesitan.
-              Impulsado por inteligencia artificial.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
-              <button
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <Button
+                size="lg"
+                className="text-lg px-8 py-6 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all"
                 onClick={scrollToWaitlist}
-                className={cn(
-                  "px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-200",
-                  "bg-primary text-white hover:bg-primary-dark",
-                  "shadow-lg hover:shadow-xl hover:-translate-y-1",
-                  "w-full sm:w-auto"
-                )}
               >
                 Unirme a la lista de espera
-              </button>
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="text-lg px-8 py-6 border border-gray-200 bg-transparent hover:bg-gray-50"
+                onClick={scrollToNext}
+              >
+                Conocer más
+              </Button>
             </div>
 
-            <p className="mt-6 text-sm text-text-secondary/80">
-              Ya hay <span className="font-semibold text-text-primary">247</span> personas en la lista
-            </p>
+            {/* Social Proof */}
+            <div className="flex items-center gap-2 text-sm text-muted-foreground justify-center lg:justify-start">
+              <div className="flex -space-x-2">
+                {[...Array(4)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-blue-400 border-2 border-background"
+                  />
+                ))}
+              </div>
+              <span className="font-medium">
+                <span className="text-foreground font-bold">247 personas</span> ya están en la lista
+              </span>
+            </div>
           </div>
 
-          <div className="flex-1 flex justify-center lg:justify-end">
-            <div className="relative">
-              <div className="absolute inset-0 bg-white/20 rounded-full blur-2xl scale-90" />
+          {/* Right Content - Mascot */}
+          <div className="relative flex justify-center lg:justify-end">
+            <div className="relative animate-float">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-400 to-blue-400 rounded-full blur-3xl opacity-20 animate-pulse" />
               <Image
                 src="/assets/tegu-hi.png"
-                alt="Tegu mascota saludando"
-                width={400}
-                height={400}
-                className="relative z-10 w-64 md:w-80 lg:w-96 h-auto animate-float"
+                alt="Tegü mascot"
+                width={500}
+                height={500}
+                className="relative drop-shadow-2xl"
                 priority
               />
             </div>
@@ -86,12 +99,15 @@ export default function Hero() {
         </div>
       </div>
 
+      {/* Scroll Indicator */}
       <button
         onClick={scrollToNext}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 p-2 text-text-primary/60 hover:text-text-primary transition-colors animate-bounce-gentle"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce"
         aria-label="Scroll hacia abajo"
       >
-        <ChevronDown size={32} />
+        <div className="w-6 h-10 border-2 border-purple-300 rounded-full flex justify-center p-2">
+          <div className="w-1.5 h-3 bg-purple-400 rounded-full" />
+        </div>
       </button>
     </section>
   );
