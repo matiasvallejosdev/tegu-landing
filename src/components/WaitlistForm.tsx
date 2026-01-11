@@ -170,14 +170,14 @@ export default function WaitlistForm() {
 
                     {/* Contact Method Toggle */}
                     <div className="flex justify-center md:justify-start">
-                      <div className="inline-flex items-center bg-gray-100 rounded-full p-1">
+                      <div className="inline-flex items-center bg-gray-100 rounded-full p-1.5 shadow-inner">
                         <button
                           type="button"
                           onClick={() => setContactMethod("email")}
                           className={cn(
-                            "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all",
+                            "flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300",
                             contactMethod === "email"
-                              ? "bg-white text-gray-900 shadow-sm"
+                              ? "bg-blue-600 text-white shadow-sm"
                               : "text-gray-600 hover:text-gray-900"
                           )}
                         >
@@ -188,9 +188,9 @@ export default function WaitlistForm() {
                           type="button"
                           onClick={() => setContactMethod("phone")}
                           className={cn(
-                            "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all",
+                            "flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300",
                             contactMethod === "phone"
-                              ? "bg-white text-gray-900 shadow-sm"
+                              ? "bg-purple-600 text-white shadow-sm"
                               : "text-gray-600 hover:text-gray-900"
                           )}
                         >
