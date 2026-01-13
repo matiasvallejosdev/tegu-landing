@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -20,9 +20,11 @@ import {
   Scissors,
   Mail,
   Phone,
+  Loader2,
 } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { submitToWaitlist } from "@/app/actions/waitlist";
 
 type Step = "contact" | "purpose" | "categories" | "success";
 type Purpose = "buscar" | "ofrecer" | "ambas" | null;
@@ -45,14 +47,31 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
   { id: "reparaciones", name: "Reparaciones", icon: <Wrench className="w-6 h-6" /> },
 ];
 
-export default function WaitlistForm() {
+type WaitlistFormProps = {
+  initialCount: number;
+};
+
+export default function WaitlistForm({ initialCount }: WaitlistFormProps) {
   const [step, setStep] = useState<Step>("contact");
   const [contactMethod, setContactMethod] = useState<ContactMethod>("phone");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [purpose, setPurpose] = useState<Purpose>(null);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [waitlistNumber] = useState(267);
+  const [waitlistNumber, setWaitlistNumber] = useState<number | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  // Check if user already submitted
+  useEffect(() => {
+    const saved = localStorage.getItem("tegu-waitlist");
+    if (saved) {
+      const data = JSON.parse(saved);
+      setWaitlistNumber(data.position);
+      setStep("success");
+    }
+  }, []);
 
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,29 +94,78 @@ export default function WaitlistForm() {
     );
   };
 
-  const handleFinalize = () => {
+  const handleSubmitToWaitlist = async (categories: string[] = []) => {
+    setIsSubmitting(true);
+    setError(null);
+
+    const result = await submitToWaitlist({
+      contactMethod,
+      email: email || null,
+      phone: phone || null,
+      purpose: purpose!,
+      categories,
+    });
+
+    setIsSubmitting(false);
+
+    if (!result.success) {
+      setError(result.error || "Ocurrió un error.");
+      return false;
+    }
+
+    const position = result.position || 1;
+    setWaitlistNumber(position);
+
+    // Save to localStorage
+    localStorage.setItem("tegu-waitlist", JSON.stringify({ position }));
+
+    return true;
+  };
+
+  const handleFinalize = async () => {
     if (purpose) {
       if (purpose === "ofrecer" || purpose === "ambas") {
         setStep("categories");
       } else {
+        const success = await handleSubmitToWaitlist([]);
+        if (success) {
+          setStep("success");
+        }
+      }
+    }
+  };
+
+  const handleCategoriesSubmit = async () => {
+    if (selectedCategories.length > 0) {
+      const success = await handleSubmitToWaitlist(selectedCategories);
+      if (success) {
         setStep("success");
       }
     }
   };
 
-  const handleCategoriesSubmit = () => {
-    if (selectedCategories.length > 0) {
-      setStep("success");
-    }
-  };
+  const handleShare = async () => {
+    const shareData = {
+      title: "Tegü - Tareas resueltas, oportunidades creadas",
+      text: "Conectamos personas con profesionales verificados para resolver cualquier tarea. Simple, seguro e impulsado por IA.",
+      url: window.location.origin + "/#waitlist",
+    };
 
-  const handleShare = () => {
     if (navigator.share) {
-      navigator.share({
-        title: "Unite a Tegü",
-        text: "Unite a la lista de espera de Tegü, tareas resueltas, oportunidades creadas",
-        url: window.location.href,
-      });
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        // User cancelled or share failed, ignore
+      }
+    } else {
+      // Fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(shareData.url);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch (err) {
+        // Clipboard failed, ignore
+      }
     }
   };
 
@@ -352,14 +420,29 @@ export default function WaitlistForm() {
                       </button>
                     </div>
 
+                    {error && (
+                      <div className="p-4 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-sm">
+                        {error}
+                      </div>
+                    )}
+
                     <Button
                       onClick={handleFinalize}
-                      disabled={!purpose}
+                      disabled={!purpose || isSubmitting}
                       size="lg"
                       className="w-full h-14 text-lg rounded-2xl bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Continuar
-                      <ArrowRight className="ml-2 w-5 h-5" />
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="mr-2 w-5 h-5 animate-spin" />
+                          Registrando...
+                        </>
+                      ) : (
+                        <>
+                          Continuar
+                          <ArrowRight className="ml-2 w-5 h-5" />
+                        </>
+                      )}
                     </Button>
                   </div>
                 </div>
@@ -424,15 +507,30 @@ export default function WaitlistForm() {
                       ))}
                     </div>
 
+                    {error && (
+                      <div className="p-4 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-sm">
+                        {error}
+                      </div>
+                    )}
+
                     <div className="pt-2">
                       <Button
                         onClick={handleCategoriesSubmit}
-                        disabled={selectedCategories.length === 0}
+                        disabled={selectedCategories.length === 0 || isSubmitting}
                         size="lg"
                         className="w-full h-14 text-lg rounded-2xl bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        Finalizar
-                        <ArrowRight className="ml-2 w-5 h-5" />
+                        {isSubmitting ? (
+                          <>
+                            <Loader2 className="mr-2 w-5 h-5 animate-spin" />
+                            Registrando...
+                          </>
+                        ) : (
+                          <>
+                            Finalizar
+                            <ArrowRight className="ml-2 w-5 h-5" />
+                          </>
+                        )}
                       </Button>
                       {selectedCategories.length > 0 && (
                         <p className="text-sm text-center text-muted-foreground mt-3">
@@ -477,7 +575,7 @@ export default function WaitlistForm() {
                   <p className="text-xl text-muted-foreground">
                     Sos el{" "}
                     <span className="font-bold text-blue-600">
-                      #{waitlistNumber}
+                      #{waitlistNumber || "..."}
                     </span>{" "}
                     en la lista. Te avisamos cuando lancemos.
                   </p>
@@ -490,8 +588,17 @@ export default function WaitlistForm() {
                   size="lg"
                   className="h-14 text-lg px-8 rounded-2xl border border-gray-200 hover:bg-gray-50 bg-transparent"
                 >
-                  <Share2 className="mr-2 w-5 h-5" />
-                  Compartir
+                  {copied ? (
+                    <>
+                      <CheckCircle className="mr-2 w-5 h-5 text-green-600" />
+                      ¡Link copiado!
+                    </>
+                  ) : (
+                    <>
+                      <Share2 className="mr-2 w-5 h-5" />
+                      Compartir
+                    </>
+                  )}
                 </Button>
               </div>
             )}

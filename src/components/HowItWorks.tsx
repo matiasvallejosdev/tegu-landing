@@ -2,14 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import {
-  FileText,
-  Users,
-  Check,
-  Briefcase,
-  ClipboardCheck,
-  DollarSign,
-} from "lucide-react";
 
 export default function HowItWorks() {
   const [activeTab, setActiveTab] = useState<"cliente" | "profesional">(
@@ -18,19 +10,19 @@ export default function HowItWorks() {
 
   const clienteSteps = [
     {
-      icon: FileText,
+      image: "/assets/tegu-client-003.png",
       title: "Describí tu tarea",
       description: "Contá que necesitas en menos de un minuto",
       color: "blue",
     },
     {
-      icon: Users,
+      image: "/assets/tegu-client-001.png",
       title: "Recibí ofertas",
       description: "Profesionales verificados te envían propuestas",
       color: "purple",
     },
     {
-      icon: Check,
+      image: "/assets/tegu-client-002.png",
       title: "Elegí y contrata",
       description: "Compara, chatea y contrata con confianza",
       color: "green",
@@ -39,21 +31,21 @@ export default function HowItWorks() {
 
   const profesionalSteps = [
     {
-      icon: Briefcase,
+      image: "/assets/tegu-pro-001.png",
       title: "Creá tu perfil",
       description: "Completá tu información y verificación en minutos",
       color: "blue",
     },
     {
-      icon: ClipboardCheck,
+      image: "/assets/tegu-pro-002.png",
       title: "Recibí solicitudes",
       description: "Nuestra IA te conecta con clientes ideales",
       color: "purple",
     },
     {
-      icon: DollarSign,
-      title: "Trabajá y crecé",
-      description: "Completá trabajos y construí tu reputación",
+      image: "/assets/tegu-pro-003.png",
+      title: "Trabajá y cobrá",
+      description: "Realiza el trabajo y recibe pagos seguros",
       color: "green",
     },
   ];
@@ -64,38 +56,30 @@ export default function HowItWorks() {
     switch (color) {
       case "blue":
         return {
-          bg: "from-blue-50 to-blue-100",
-          icon: "text-blue-600",
           badge: "bg-blue-600",
         };
       case "purple":
         return {
-          bg: "from-purple-50 to-purple-100",
-          icon: "text-purple-600",
           badge: "bg-purple-600",
         };
       case "green":
         return {
-          bg: "from-green-50 to-green-100",
-          icon: "text-green-600",
           badge: "bg-green-600",
         };
       default:
         return {
-          bg: "from-gray-50 to-gray-100",
-          icon: "text-gray-600",
           badge: "bg-gray-600",
         };
     }
   };
 
   return (
-    <section className="bg-white py-24 md:py-32">
+    <section id="how-it-works" className="bg-white py-24 md:py-32">
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+        <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
           <h2 className="text-4xl md:text-5xl font-bold text-balance leading-tight tracking-tight">
-            Cómo funciona
+            Como funciona
           </h2>
           <p className="text-xl text-muted-foreground text-pretty leading-relaxed">
             Simple, rápido y seguro. Así de fácil es usar Tegü.
@@ -130,33 +114,34 @@ export default function HowItWorks() {
 
         {/* Steps Container */}
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8 md:gap-12 relative">
+          <div className="grid md:grid-cols-3 gap-8 md:gap-16 relative">
             {/* Connecting Lines */}
             <div
-              className="hidden md:block absolute top-24 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-200 via-purple-200 to-green-200"
-              style={{ top: "6rem" }}
+              className="hidden md:block absolute top-28 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-200 via-purple-300 to-blue-200 -z-0"
+              style={{ top: "7rem" }}
             />
 
-            {/* Steps */}
             {steps.map((step, index) => {
               const colors = getColorClasses(step.color);
-              const Icon = step.icon;
 
               return (
                 <div
                   key={index}
                   className="relative flex flex-col items-center text-center space-y-6 group"
                 >
-                  {/* Icon Container */}
+                  {/* Mascot Image Container */}
                   <div className="relative">
-                    <div
-                      className={`w-24 h-24 bg-gradient-to-br ${colors.bg} rounded-3xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-500 relative z-10`}
-                    >
-                      <Icon className={`w-10 h-10 ${colors.icon}`} />
+                    <div className="w-56 h-56 relative group-hover:scale-105 transition-transform duration-500">
+                      <Image
+                        src={step.image || "/placeholder.svg"}
+                        alt={step.title}
+                        fill
+                        className="object-contain drop-shadow-2xl"
+                      />
                     </div>
                     {/* Step Number Badge */}
                     <div
-                      className={`absolute -bottom-3 left-1/2 -translate-x-1/2 w-9 h-9 ${colors.badge} text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg z-20`}
+                      className={`absolute -bottom-3 left-1/2 -translate-x-1/2 w-11 h-11 ${colors.badge} text-white rounded-full flex items-center justify-center text-lg font-bold shadow-lg z-20`}
                     >
                       {index + 1}
                     </div>
@@ -174,22 +159,6 @@ export default function HowItWorks() {
                 </div>
               );
             })}
-          </div>
-
-          {/* Bottom Mascot Illustration */}
-          <div className="flex justify-center mt-16">
-            <div className="relative w-72 h-48 md:w-96 md:h-56">
-              <Image
-                src={
-                  activeTab === "cliente"
-                    ? "/assets/tegu-helping.png"
-                    : "/assets/tegu-form.png"
-                }
-                alt="Tegü"
-                fill
-                className="object-contain drop-shadow-lg transition-opacity duration-300"
-              />
-            </div>
           </div>
         </div>
       </div>

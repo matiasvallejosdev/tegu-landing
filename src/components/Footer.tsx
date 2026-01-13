@@ -3,193 +3,88 @@ import { Instagram, Linkedin, Twitter } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
-      <div className="container mx-auto px-4 py-16">
-        {/* Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-12">
-          {/* Logo and Description Column */}
-          <div className="md:col-span-4 space-y-6">
-            <div className="flex items-center gap-3">
-              <Image
-                src="/assets/tegulogo.png"
-                alt="Tegü"
-                width={48}
-                height={48}
-                className="rounded-full"
-              />
-              <span className="text-2xl font-bold">Tegü</span>
-            </div>
-            <p className="text-purple-200 leading-relaxed max-w-sm">
-              Tareas resueltas, oportunidades creadas. Conectamos personas con
-              profesionales verificados.
-            </p>
-            {/* Social Media Links */}
-            <div className="flex items-center gap-3">
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110"
-              >
-                <Linkedin className="w-5 h-5" />
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110"
-              >
-                <Twitter className="w-5 h-5" />
-              </a>
-            </div>
+    <footer className="bg-white border-t border-gray-200">
+      <div className="container mx-auto px-4 py-12">
+        {/* Logo and Nav Links */}
+        <div className="flex flex-col items-center gap-8">
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+            <Image
+              src="/assets/tegulogo.png"
+              alt="Tegü"
+              width={32}
+              height={32}
+              className="rounded-full"
+            />
+            <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Tegü
+            </span>
           </div>
 
-          {/* Links Columns */}
-          <div className="md:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-8">
-            {/* Producto Column */}
-            <div className="space-y-4">
-              <h4 className="font-semibold text-lg text-white">Producto</h4>
-              <ul className="space-y-3">
-                <li>
-                  <a
-                    href="#"
-                    className="text-purple-200 hover:text-white transition-colors text-sm"
-                  >
-                    Características
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-purple-200 hover:text-white transition-colors text-sm"
-                  >
-                    Cómo funciona
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-purple-200 hover:text-white transition-colors text-sm"
-                  >
-                    Precios
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-purple-200 hover:text-white transition-colors text-sm"
-                  >
-                    FAQ
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Empresa Column */}
-            <div className="space-y-4">
-              <h4 className="font-semibold text-lg text-white">Empresa</h4>
-              <ul className="space-y-3">
-                <li>
-                  <a
-                    href="#"
-                    className="text-purple-200 hover:text-white transition-colors text-sm"
-                  >
-                    Sobre nosotros
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-purple-200 hover:text-white transition-colors text-sm"
-                  >
-                    Blog
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-purple-200 hover:text-white transition-colors text-sm"
-                  >
-                    Carreras
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-purple-200 hover:text-white transition-colors text-sm"
-                  >
-                    Contacto
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Legal Column */}
-            <div className="space-y-4">
-              <h4 className="font-semibold text-lg text-white">Legal</h4>
-              <ul className="space-y-3">
-                <li>
-                  <a
-                    href="#"
-                    className="text-purple-200 hover:text-white transition-colors text-sm"
-                  >
-                    Términos de uso
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-purple-200 hover:text-white transition-colors text-sm"
-                  >
-                    Privacidad
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-purple-200 hover:text-white transition-colors text-sm"
-                  >
-                    Cookies
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-purple-200 hover:text-white transition-colors text-sm"
-                  >
-                    Licencias
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
+          {/* Navigation Links */}
+          <nav className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-600">
+            <a
+              href="#how-it-works"
+              className="hover:text-gray-900 transition-colors"
+            >
+              Cómo funciona
+            </a>
+            <a
+              href="#pricing"
+              className="hover:text-gray-900 transition-colors"
+            >
+              Precios
+            </a>
+            <a href="/legal" className="hover:text-gray-900 transition-colors">
+              Términos
+            </a>
+            <a
+              href="/legal"
+              className="hover:text-gray-900 transition-colors"
+            >
+              Privacidad
+            </a>
+          </nav>
         </div>
 
-        {/* Footer Bottom - Copyright */}
-        <div className="pt-8 border-t border-white/10">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-purple-200 text-sm">
-              © 2025 Tegü. Hecho con amor en Argentina.
-            </p>
-            <div className="flex items-center gap-6 text-sm text-purple-200">
-              <a href="#" className="hover:text-white transition-colors">
-                Términos
-              </a>
-              <a href="#" className="hover:text-white transition-colors">
-                Privacidad
-              </a>
-              <a href="#" className="hover:text-white transition-colors">
-                Contacto
-              </a>
-            </div>
+        {/* Divider */}
+        <div className="my-8 border-t border-gray-200" />
+
+        {/* Bottom Row: Copyright and Social Links */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-gray-600">
+            © 2026 Tegü. Todos los derechos reservados.
+          </p>
+
+          {/* Social Links */}
+          <div className="flex items-center gap-4">
+            <a
+              href="https://instagram.com/teguapp"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+              aria-label="Instagram"
+            >
+              <Instagram className="w-5 h-5" />
+            </a>
+            <a
+              href="https://linkedin.com/company/teguapp"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+              aria-label="LinkedIn"
+            >
+              <Linkedin className="w-5 h-5" />
+            </a>
+            <a
+              href="https://twitter.com/teguapp"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+              aria-label="Twitter"
+            >
+              <Twitter className="w-5 h-5" />
+            </a>
           </div>
         </div>
       </div>

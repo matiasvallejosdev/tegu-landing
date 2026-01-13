@@ -5,7 +5,11 @@ import { Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-export default function Hero() {
+type HeroProps = {
+  waitlistCount: number;
+};
+
+export default function Hero({ waitlistCount }: HeroProps) {
   const scrollToWaitlist = () => {
     const element = document.getElementById("waitlist");
     if (element) {
@@ -23,7 +27,7 @@ export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Hero Section */}
-      <div className="container mx-auto px-4 py-12 md:py-20">
+      <div className="container mx-auto px-4 pt-24 pb-12 md:pt-28 md:pb-20">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="space-y-8 text-center lg:text-left">
@@ -32,7 +36,7 @@ export default function Hero() {
               className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-purple-100 text-purple-700 border-purple-200 rounded-full"
             >
               <Sparkles className="w-4 h-4" />
-              Proximamente en Argentina
+              Proximamente en Argentina 🇦🇷
             </Badge>
 
             <div className="space-y-4">
@@ -67,17 +71,32 @@ export default function Hero() {
             </div>
 
             {/* Social Proof */}
-            <div className="flex items-center gap-2 text-sm text-muted-foreground justify-center lg:justify-start">
-              <div className="flex -space-x-2">
-                {[...Array(4)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-blue-400 border-2 border-background"
-                  />
-                ))}
+            <div className="flex items-center gap-4 text-base text-muted-foreground justify-center lg:justify-start">
+              <div className="flex -space-x-3">
+                <Image
+                  src="/assets/face_001.png"
+                  alt="Usuario"
+                  width={44}
+                  height={44}
+                  className="w-11 h-11 rounded-full border-2 border-background object-cover"
+                />
+                <Image
+                  src="/assets/face_002.png"
+                  alt="Usuario"
+                  width={44}
+                  height={44}
+                  className="w-11 h-11 rounded-full border-2 border-background object-cover"
+                />
+                <Image
+                  src="/assets/face_003.png"
+                  alt="Usuario"
+                  width={44}
+                  height={44}
+                  className="w-11 h-11 rounded-full border-2 border-background object-cover"
+                />
               </div>
-              <span className="font-medium">
-                <span className="text-foreground font-bold">247 personas</span> ya están en la lista
+              <span className="font-medium text-lg">
+                <span className="text-foreground font-bold">{waitlistCount} personas</span> ya están en la lista
               </span>
             </div>
           </div>
@@ -91,7 +110,7 @@ export default function Hero() {
                 alt="Tegü mascot"
                 width={500}
                 height={500}
-                className="relative drop-shadow-2xl"
+                className="relative drop-shadow-2xl w-64 h-64 md:w-80 md:h-80 lg:w-[500px] lg:h-[500px] object-contain"
                 priority
               />
             </div>
@@ -99,10 +118,10 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
+      {/* Scroll Indicator - hidden on mobile */}
       <button
         onClick={scrollToNext}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce"
+        className="hidden md:block absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce"
         aria-label="Scroll hacia abajo"
       >
         <div className="w-6 h-10 border-2 border-purple-300 rounded-full flex justify-center p-2">
