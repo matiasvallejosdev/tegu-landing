@@ -73,7 +73,7 @@ export default function Pricing() {
                     <Check className="h-3.5 w-3.5 text-blue-600" />
                   </div>
                   <span className="text-sm text-gray-700">
-                    Profesionales verificados
+                    Tegu Pros verificados
                   </span>
                 </li>
                 <li className="flex items-start gap-2.5">
@@ -106,7 +106,7 @@ export default function Pricing() {
               <div>
                 <h3 className="text-2xl md:text-3xl font-bold mb-2">Pro</h3>
                 <p className="text-base text-blue-100">
-                  Para profesionales activos
+                  Para Tegu Pros activos
                 </p>
               </div>
 

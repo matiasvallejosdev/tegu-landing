@@ -63,7 +63,7 @@ export default function Features() {
                   Tegu Pros verificados
                 </h3>
                 <p className="text-base text-gray-600 leading-relaxed">
-                  Profesionales validados con reseñas reales de personas reales
+                  Cada perfil es validado con reseñas reales de personas reales
                 </p>
               </div>
             </div>
