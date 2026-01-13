@@ -63,14 +63,14 @@ export default function Navbar() {
               <Button
                 variant="outline"
                 onClick={scrollToWaitlist}
-                className="rounded-2xl border border-gray-200 bg-transparent hover:bg-gray-50 text-sm md:text-base px-3 md:px-4"
+                className="rounded-full border border-gray-200 bg-transparent hover:bg-gray-50 text-sm md:text-base px-4 shadow-none"
               >
                 Unirme a la lista
               </Button>
 
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 border border-gray-200 hover:bg-black/5 rounded-full transition-colors"
+                className="md:hidden p-2 border border-gray-200 hover:bg-gray-50 rounded-full transition-colors"
                 aria-label="Toggle menu"
               >
                 {mobileMenuOpen ? <X className="w-6 h-6 text-gray-700" /> : <Menu className="w-6 h-6 text-gray-700" />}
