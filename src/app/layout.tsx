@@ -7,10 +7,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Tegu - El futuro de los servicios del hogar",
     description: "Conectamos talento verificado con quienes lo necesitan.",
-    images: ["/assets/tegu-logo2.png"],
+    images: ["/assets/tegulogo.png"],
   },
   icons: {
-    icon: "/assets/tegulogo.png",
+    icon: "/tegulogo.ico",
   },
 };
 

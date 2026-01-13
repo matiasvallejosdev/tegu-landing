@@ -69,7 +69,7 @@ export default function Navbar() {
               }}
             >
               <Image
-                src="/assets/tegu-logo2.png"
+                src="/assets/tegulogo.png"
                 alt="Tegu"
                 width={40}
                 height={40}
