@@ -59,7 +59,15 @@ export default function Navbar() {
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16 md:h-20">
-            <Link href="/" className="flex-shrink-0 flex items-center">
+            <Link
+              href="/"
+              className="flex-shrink-0 flex items-center"
+              onClick={() => {
+                if (pathname === "/") {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}
+            >
               <Image
                 src="/assets/tegu-logo2.png"
                 alt="Tegu"
