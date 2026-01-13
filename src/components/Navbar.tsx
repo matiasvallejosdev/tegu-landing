@@ -74,7 +74,7 @@ export default function Navbar() {
               <Button
                 variant="outline"
                 onClick={scrollToWaitlist}
-                className="h-10 rounded-full border border-gray-200 bg-transparent hover:bg-gray-50 text-sm md:text-base px-4 shadow-none"
+                className="hidden md:flex h-10 rounded-full border border-gray-200 bg-transparent hover:bg-gray-50 text-sm md:text-base px-4 shadow-none"
               >
                 Unirme a la lista
               </Button>
