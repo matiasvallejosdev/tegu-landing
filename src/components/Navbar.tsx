@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
@@ -10,6 +11,8 @@ import { Button } from "@/components/ui/button";
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,19 +24,27 @@ export default function Navbar() {
   }, []);
 
   const scrollToWaitlist = () => {
-    const element = document.getElementById("waitlist");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
     setMobileMenuOpen(false);
+    if (pathname !== "/") {
+      router.push("/#waitlist");
+    } else {
+      const element = document.getElementById("waitlist");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
   };
 
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
     setMobileMenuOpen(false);
+    if (pathname !== "/") {
+      router.push(`/#${id}`);
+    } else {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
   };
 
   return (
@@ -63,17 +74,17 @@ export default function Navbar() {
               <Button
                 variant="outline"
                 onClick={scrollToWaitlist}
-                className="rounded-full border border-gray-200 bg-transparent hover:bg-gray-50 text-sm md:text-base px-4 shadow-none"
+                className="h-10 rounded-full border border-gray-200 bg-transparent hover:bg-gray-50 text-sm md:text-base px-4 shadow-none"
               >
                 Unirme a la lista
               </Button>
 
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 border border-gray-200 hover:bg-gray-50 rounded-full transition-colors"
+                className="md:hidden h-10 w-10 flex items-center justify-center border border-gray-200 hover:bg-gray-50 rounded-full transition-colors"
                 aria-label="Toggle menu"
               >
-                {mobileMenuOpen ? <X className="w-6 h-6 text-gray-700" /> : <Menu className="w-6 h-6 text-gray-700" />}
+                {mobileMenuOpen ? <X className="w-5 h-5 text-gray-700" /> : <Menu className="w-5 h-5 text-gray-700" />}
               </button>
             </div>
           </div>
