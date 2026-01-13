@@ -34,7 +34,7 @@ export default function FAQ() {
                 </AccordionTrigger>
                 <AccordionContent className="px-8 pb-6 text-base text-gray-700 leading-relaxed">
                   Tegü es una plataforma que conecta personas que necesitan
-                  resolver tareas con profesionales verificados, usando
+                  resolver tareas con Tegu Pros verificados, usando
                   inteligencia artificial para encontrar el match perfecto.
                 </AccordionContent>
               </AccordionItem>
@@ -77,7 +77,7 @@ export default function FAQ() {
                 <AccordionContent className="px-8 pb-6 text-base text-gray-700 leading-relaxed">
                   Para clientes, usar Tegü es completamente gratis. No cobramos
                   comisiones. Próximamente implementaremos un sistema de
-                  suscripciones para profesionales.
+                  suscripciones para Tegu Pros.
                 </AccordionContent>
               </AccordionItem>
 
@@ -86,10 +86,10 @@ export default function FAQ() {
                 className="border-b border-gray-100 last:border-b-0"
               >
                 <AccordionTrigger className="px-8 py-6 text-lg font-semibold hover:no-underline hover:bg-gray-50/50 transition-colors">
-                  ¿Cómo se verifican los profesionales?
+                  ¿Cómo se verifican los Tegu Pros?
                 </AccordionTrigger>
                 <AccordionContent className="px-8 pb-6 text-base text-gray-700 leading-relaxed">
-                  Cada profesional pasa por un proceso de verificación que
+                  Cada Tegu Pro pasa por un proceso de verificación que
                   incluye validación de identidad, referencias laborales, y
                   revisión de experiencia. Además, contamos con un sistema de
                   reseñas donde los usuarios pueden calificar el servicio

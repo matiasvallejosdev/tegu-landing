@@ -34,7 +34,7 @@ export default function ValueProps() {
               <li className="flex items-start gap-3">
                 <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
                 <span className="text-lg text-gray-700 leading-relaxed">
-                  Profesionales verificados y confiables
+                  Tegu Pros verificados y confiables
                 </span>
               </li>
               <li className="flex items-start gap-3">
@@ -71,7 +71,7 @@ export default function ValueProps() {
             {/* Card Header */}
             <div className="space-y-3">
               <h3 className="text-2xl md:text-3xl font-semibold tracking-tight">
-                Para profesionales
+                Para Tegu Pros
               </h3>
             </div>
 

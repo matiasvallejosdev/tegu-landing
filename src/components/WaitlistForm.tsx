@@ -147,7 +147,7 @@ export default function WaitlistForm({ initialCount }: WaitlistFormProps) {
   const handleShare = async () => {
     const shareData = {
       title: "Tegü - Tareas resueltas, oportunidades creadas",
-      text: "Conectamos personas con profesionales verificados para resolver cualquier tarea. Simple, seguro e impulsado por IA.",
+      text: "Encontrá Tegu Pros verificados para cualquier tarea. Simple, rápido y seguro.",
       url: window.location.origin + "/#waitlist",
     };
 

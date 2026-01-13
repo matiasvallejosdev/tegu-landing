@@ -47,7 +47,7 @@ export default function Hero({ waitlistCount }: HeroProps) {
                 </span>
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground text-pretty leading-relaxed max-w-2xl">
-                Conectamos personas con profesionales verificados para resolver cualquier tarea. Simple, seguro e impulsado por IA.
+                Encontrá <span className="font-semibold text-foreground">Tegu Pros</span> verificados para cualquier tarea. Simple, rápido y seguro.
               </p>
             </div>
 

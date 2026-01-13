@@ -44,14 +44,14 @@ export default function Features() {
             </div>
           </div>
 
-          {/* Feature 2 - Profesionales verificados */}
+          {/* Feature 2 - Tegu Pros */}
           <div className="group bg-gray-100 rounded-3xl p-10 hover:bg-white hover:shadow-xl transition-all duration-500 border border-gray-200 hover:border-gray-300 flex flex-col h-full">
             <div className="flex-1 space-y-6">
               {/* Mascot Image */}
               <div className="relative w-32 h-32 mx-auto group-hover:scale-105 transition-transform duration-500">
                 <Image
                   src="/assets/tegu-logo-pro.png"
-                  alt="Tegü Profesional"
+                  alt="Tegu Pro"
                   fill
                   className="object-contain drop-shadow-lg"
                 />
@@ -60,10 +60,10 @@ export default function Features() {
               {/* Content */}
               <div className="space-y-4 text-center">
                 <h3 className="text-2xl font-semibold tracking-tight">
-                  Profesionales verificados
+                  Tegu Pros verificados
                 </h3>
                 <p className="text-base text-gray-600 leading-relaxed">
-                  Cada perfil es validado. Reseñas reales de personas reales
+                  Profesionales validados con reseñas reales de personas reales
                 </p>
               </div>
             </div>

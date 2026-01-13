@@ -18,7 +18,7 @@ export default function HowItWorks() {
     {
       image: "/assets/tegu-client-001.png",
       title: "Recibí ofertas",
-      description: "Profesionales verificados te envían propuestas",
+      description: "Tegu Pros verificados te envían propuestas",
       color: "purple",
     },
     {
@@ -107,7 +107,7 @@ export default function HowItWorks() {
                   : "text-gray-600 hover:text-gray-900"
               }`}
             >
-              Soy Profesional
+              Soy Tegu Pro
             </button>
           </div>
         </div>
